@@ -1,0 +1,14 @@
+<body>
+<button onClick='test()'>test</button>
+<input type='color' id='c' onchange='test()' >
+
+</body>
+<script>
+function test(){
+var c=document.getElementById('c').value;
+
+document.body.style.backgroundColor=c;
+
+}
+
+</script>
