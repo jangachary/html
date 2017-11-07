@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Radio buttons</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+	
+	
+	<form>
+	<label for="Orange"> Orange</label>
+			 <input
+				type="radio"
+				name="options"
+				value="Orange"
+				id="Orange"
+				>
+	<label for="Apple"> Apple</label>
+			<input
+				type="radio"
+				name="options"
+				value="Apple"
+				id="Apple">
+				
+
+	</form>
+	<br>Selected fruit is
+	<span id="fruit"></span>
+</body>
+<script type="text/javascript">
+$(document).ready(function () {
+$("input[type='radio']").click(function () {
+var fruit=$(this).val();
+$("#fruit").text(fruit);
+	});
+});
+</script>
+</html>
