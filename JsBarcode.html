@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+
+
+    <title>BarCode generator impl</title>
+    <style>
+        img {
+            border: 1px solid #456;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>Hello world</h1>
+    <a href="https://github.com/lindell/JsBarcode">JsBarcode</a>
+    <br />
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+
+
+                <input type="text" id="srcText" value="Hello World">
+                <br />
+                <input type="checkbox" id="displayValue">
+                <br />
+                <button id="barCodeGenerate">Generate</button>
+                <button id="download">download</button>
+
+            </div>
+            <div class="col-lg-6">
+                <svg id="srcVal"></svg>
+                <div id="imgDiv"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <!--    <script src="JsBarcode.all.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/JsBarcode.all.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+
+            $("#barCodeGenerate").click(function() {
+                var displayValue = $("#displayValue").is(":checked");
+                let srcText = $("#srcText").val();
+                JsBarcode("#srcVal", srcText, {
+                    //                    format: "pharmacode",
+                    //                    lineColor: "#0aa",
+                    //                    width: 4,
+                    height: 40,
+                    displayValue: displayValue
+                });
+            });
+
+            $("#download").click(function() {
+                svg2Png(
+                    "#srcVal",
+                    "#imgDiv"
+                );
+                var link = document.createElement('a');
+                link.href = $("#imgDiv img").prop('src');
+                link.download = 'barCode.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        });
+
+
+        function svg2Png(svgEle, div) {
+            var ele = $(svgEle);
+            let svgData = ele[0].outerHTML;
+            let d = "data:image/svg+xml;base64," + svgData;
+            var canvas = $("<canvas>");
+            var h = ele.height();
+            var w = ele.width();
+            canvas = canvas[0];
+            canvas.height = h;
+            canvas.width = w;
+            var ctx = canvas.getContext("2d");
+            var image = new Image();
+            var DOMURL = self.URL || self.webkitURL || self;
+            var svg = new Blob([svgData], {
+                type: "image/svg+xml;charset=utf-8"
+            });
+            var url = DOMURL.createObjectURL(svg);
+            image.onload = function() {
+                ctx.drawImage(image, 0, 0);
+                var png = canvas.toDataURL("image/png");
+                $(div).append('<img src="' + png + '"/>');
+                DOMURL.revokeObjectURL(png);
+
+            };
+            image.src = url;
+        }
+
+    </script>
+</body>
+
+</html>
