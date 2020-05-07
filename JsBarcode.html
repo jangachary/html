@@ -88,6 +88,7 @@
             image.onload = function() {
                 ctx.drawImage(image, 0, 0);
                 var png = canvas.toDataURL("image/png");
+                $(div).empty();
                 $(div).append('<img src="' + png + '"/>');
                 DOMURL.revokeObjectURL(png);
 
